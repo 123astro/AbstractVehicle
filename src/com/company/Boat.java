@@ -8,16 +8,15 @@ public class Boat extends Vehicle {
 
 
     public Boat(String operatorName, String colorOfVehicle, int numberOfSeats, Engine engine, Passenger passenger,
-                boolean sailBoat, boolean motorBoat) {
+                boolean isSailboat, boolean motorBoat) {
         super(operatorName, colorOfVehicle, numberOfSeats, engine, passenger);
-        this.isSailboat = sailBoat;
+        this.isSailboat = isSailboat;
         this.isMotorBoat = motorBoat;
-
     }
 
     @Override
     public void horn() {
-        System.out.println("fog horn sound");
+        System.out.println("quack quack");
     }
 
     @Override

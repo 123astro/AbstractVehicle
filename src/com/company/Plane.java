@@ -16,7 +16,7 @@ public class Plane extends Vehicle {
 
     @Override
     public void horn(){
-        System.out.println("ear shattering noise");
+        System.out.println("High freq beep");
     }
 
     @Override

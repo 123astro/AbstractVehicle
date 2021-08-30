@@ -1,13 +1,12 @@
 package com.company;
 
-
 public abstract class Vehicle {
     private String operatorName;
     private String colorOfVehicle;
     private int numberOfSeats;
     private Engine engine;
     private Passenger passenger;
-
+    public DriversSeat driversSeat = new DriversSeat();
 
     public Vehicle(String operatorName, String colorOfVehicle, int numberOfSeats, Engine engine, Passenger passenger) {
         this.operatorName = operatorName;
@@ -16,7 +15,6 @@ public abstract class Vehicle {
         this.engine = engine;
         this.passenger = passenger;
     }
-
 
     public void startVehicle() {
         engine.isOn = true;
