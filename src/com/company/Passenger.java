@@ -1,31 +1,20 @@
 package com.company;
 
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
 public class Passenger {
-
-    private List<String> passengers = new ArrayList<String>();
+    private String passengerName;
 
     public Passenger(String passengerName) {
-        passengers.add((passengerName));
+        this.passengerName = passengerName;
     }
 
-    public void displayAllPassengers() {
-        System.out.println(passengers);
+    @Override
+    public String toString() {
+        return "Passenger{" +
+                "passengerName='" + passengerName + '\'' +
+                '}';
     }
 
-    public void addPassenger(String passengerName) {
-        passengers.add(passengerName);
-    }
-
-    public void removePassenger(String passenger){
-       for(int i = 0; i < passengers.size(); i++){
-           if(Objects.equals(passenger, passengers.get(i))) {
-               passengers.remove(i);
-           }
-       }
+    public String getPassengerName() {
+        return passengerName;
     }
 }

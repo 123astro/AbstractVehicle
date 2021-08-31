@@ -1,4 +1,4 @@
-package com.company;
+package com.company.vehicle;
 
 
 public class Car extends Vehicle {
@@ -8,9 +8,10 @@ public class Car extends Vehicle {
 
 
 
-    public Car(String operatorName, String colorOfVehicle, int numberOfSeats, Engine engine, Passenger passenger,
+
+    public Car(String operatorName, String colorOfVehicle, int numberOfSeats,
                String type, String brand, int numberOfDoors) {
-        super(operatorName, colorOfVehicle, numberOfSeats, engine, passenger);
+        super(operatorName, colorOfVehicle, numberOfSeats);
         this.type = type;
         this.brand = brand;
         this.numberOfDoors = numberOfDoors;
@@ -28,7 +29,7 @@ public class Car extends Vehicle {
 
     @Override
     public void motorSound(){
-        System.out.println("voom voom");
+        System.out.println("vroom vroom");
     };
 
 

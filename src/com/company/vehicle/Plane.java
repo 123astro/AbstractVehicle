@@ -1,4 +1,4 @@
-package com.company;
+package com.company.vehicle;
 
 public class Plane extends Vehicle {
     private boolean isLandbased;
@@ -6,9 +6,9 @@ public class Plane extends Vehicle {
     private int lbsCapacity;
 
 
-    public Plane(String operatorName, String colorOfVehicle, int numberOfSeats, Engine engine, Passenger passenger,
+    public Plane(String operatorName, String colorOfVehicle, int numberOfSeats,
                  boolean islandBased, boolean amphibious, int lbsCapacity) {
-        super(operatorName, colorOfVehicle, numberOfSeats, engine, passenger);
+        super(operatorName, colorOfVehicle, numberOfSeats);
         this.isLandbased = islandBased;
         this.isAmphibious = amphibious;
         this.lbsCapacity = lbsCapacity;

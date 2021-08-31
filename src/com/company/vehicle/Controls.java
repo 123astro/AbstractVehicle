@@ -1,9 +1,9 @@
-package com.company;
+package com.company.vehicle;
 
 
 import java.util.Scanner;
 
-public class DriversSeat {
+public class Controls {
     private int speed = 0;
     private int rawSpeed = 0;
     private int incrementDistance = 0;
@@ -41,7 +41,6 @@ public class DriversSeat {
         }
     }
 
-
     public void accelerate() {
         speed += 10;
         rawSpeed += 1;
@@ -50,7 +49,6 @@ public class DriversSeat {
         System.out.println("Current distance left to travel " + getDistanceLeft() + " meters");
         System.out.println("Current speed " + getSpeed());
         checkPositionOnTrack();
-
     }
 
     public int getSpeed() {
@@ -120,8 +118,8 @@ public class DriversSeat {
     }
 
     public void checkPositionOnTrack() {
-        if (distanceLeft <= -10){
-            System.out.println(" ********************You hit the wall of doom you loser !!!! " +
+        if (distanceLeft <= -11){
+            System.out.println(" ********************You hit the wall of doom - you loser !!!! " +
                     "***************************");
             stop();
         }

@@ -1,4 +1,4 @@
-package com.company;
+package com.company.vehicle;
 
 
 public class Boat extends Vehicle {
@@ -7,9 +7,9 @@ public class Boat extends Vehicle {
     private boolean isMotorBoat;
 
 
-    public Boat(String operatorName, String colorOfVehicle, int numberOfSeats, Engine engine, Passenger passenger,
+    public Boat(String operatorName, String colorOfVehicle, int numberOfSeats,
                 boolean isSailboat, boolean motorBoat) {
-        super(operatorName, colorOfVehicle, numberOfSeats, engine, passenger);
+        super(operatorName, colorOfVehicle, numberOfSeats);
         this.isSailboat = isSailboat;
         this.isMotorBoat = motorBoat;
     }
