@@ -15,13 +15,15 @@ public class Plane extends Vehicle {
     }
 
     @Override
-    public void horn(){
+    public void horn() {
         System.out.println("High freq beep");
     }
 
     @Override
-    public void motorSound(){
+    public void motorSound() {
         System.out.println("buzzzzzzzzzzzzzzzzzzzzz");
-    };
+    }
+
+    ;
 
 }

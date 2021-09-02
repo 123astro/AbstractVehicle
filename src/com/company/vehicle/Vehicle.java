@@ -23,6 +23,9 @@ public abstract class Vehicle {
 
     }
 
+    public Engine getEngine() {
+        return engine;
+    }
 
     public void startVehicle() {
         engine.startEngine();

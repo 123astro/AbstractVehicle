@@ -1,7 +1,5 @@
 package com.company.vehicle;
 
-
-import com.company.engine.Engine;
 import com.company.engine.V6;
 import com.company.engine.V8;
 
@@ -32,7 +30,8 @@ public class Controls {
     private final static String[] DRIVE = new String[]{
             "1. Accelerate",
             "2. Decelerate",
-            "3. Coast"
+            "3. Coast",
+            "4. Exit Program - Car on fire!!!"
     };
 
     public static void displayOptions(String prompt, String[] options) { // prompt is the first line to print ( to do)
@@ -58,19 +57,20 @@ public class Controls {
     }
 
     public void getSelections() {
-        displayOptions("Your choices", CAR_SELECTION);
-        int choice = getInt(1, 2, "Please selected a car");
+        displayOptions("Your choices:", CAR_SELECTION);
+        int choice = getInt(1, 2, "Please selected a car.");
         carLot(choice);
         displayOptions("Engines: ", ENGINE);
-        choice = getInt(1, 2, "Please select an engine.");
+        choice = getInt(1, 2, "Please select an engine and the pit crew will get your car started.");
         selectEngine(choice);
+
     }
 
     public boolean start() {
         vehicle.startVehicle();
-        System.out.println("Vehicle is running.");
+        vehicle.displayEngine();
         displayOptions("Your choices:", DRIVE);
-        int choice = getInt(1, 3, "Select an acton:");
+        int choice = getInt(1, 4, "Please select an acton:");
         return handleMenuSelection(choice);
     }
 
@@ -80,6 +80,7 @@ public class Controls {
             case 2 -> this.decelerate();
             case 3 -> this.coast();
             case 4 -> {
+                System.out.println("******************BOOM*****************");
                 return false;
             }
             default -> System.out.println("Invalid");
@@ -90,12 +91,12 @@ public class Controls {
     public void carLot(int choice) {
         switch (choice) {
             case 1 -> {
-                vehicle = new Car("You", "black", 2, "bug", "vw", 2);
-                System.out.println(vehicle);
+                vehicle = new Car("You", "Black", 2, "BUG", "VOLKSWAGEN", 2);
+                System.out.println("THE OPERATOR AND CAR: " + vehicle);
             }
             case 2 -> {
-                vehicle = new Car("You", "black", 2, "Chevy", "Corvette", 2);
-                System.out.println(vehicle);
+                vehicle = new Car("You", "Black", 2, "Chevy", "Corvette", 2);
+                System.out.println("THE OPERATOR AND CAR: " + vehicle);
             }
             default -> System.out.println(" Please select a vehicle.");
         }
@@ -105,11 +106,10 @@ public class Controls {
         switch (choice) {
             case 1 -> {
                 vehicle.addEngine(new V6(true));
-                vehicle.displayEngine();
+                System.out.println();
             }
             case 2 -> {
                 vehicle.addEngine(new V8(true));
-                vehicle.displayEngine();
             }
             default -> System.out.println(" Please select an engine.");
         }
@@ -121,7 +121,7 @@ public class Controls {
         windResistance();
         distanceLeft -= calculatedWindDistance;
         System.out.println("Current distance left to travel " + getDistanceLeft() + " meters");
-        System.out.println("Current speed " + getSpeed());
+        System.out.println("Current speed " + getSpeed() + " mph.");
         checkPositionOnTrack();
     }
 
@@ -171,9 +171,7 @@ public class Controls {
             System.out.println("Vehicle has drifted to a stopped!! ");
             distanceLeft -= 1;
             System.out.println("Current distance left to travel " + getDistanceLeft() + " meters");
-            //getSelections();
         }
-
     }
 
     public void stop() {
@@ -183,6 +181,9 @@ public class Controls {
     public int windResistance() {
         int min = 1;
         int max = 10;
+        if(vehicle.getEngine().getHorsepower() == 400){
+            max = 12;
+        }
         int wind = (int) Math.round(Math.random() * (max - min + 1) + min);
         windSpeed = wind * 10;
         calculatedWindDistance = (10 - wind) + (1 + rawSpeed);

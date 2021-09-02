@@ -11,6 +11,5 @@ public class Main {
      Controls controls = new Controls();
      controls.getSelections();
      while (controls.start());
-
     }
 }

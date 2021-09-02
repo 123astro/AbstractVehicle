@@ -11,16 +11,20 @@ public abstract class Engine {
         this.isUnleaded = isUnleaded;
     }
 
-    public void startEngine(){
+    public void startEngine() {
         isOn = true;
     }
 
-    public void stopEngine(){
+    public void stopEngine() {
         isOn = false;
     }
 
+    public int getHorsepower() {
+        return horsepower;
+    }
+
     public String toString() {
-        return " | Gas fuel: " + isUnleaded + " | Is on: " + isOn;
+        return "| Gas fuel: " + isUnleaded + " | Is on: " + isOn;
     }
 
 
