@@ -1,11 +1,14 @@
 package com.company.engine;
 
 public abstract class Engine {
-    private boolean isGas = false ;
+    private final boolean isUnleaded;
     private boolean isOn = false;
+    protected int horsepower;
+    protected int numberOfCylinders;
 
-    public Engine(boolean isGas) {
-        this.isGas = isGas;
+
+    public Engine(boolean isUnleaded) {
+        this.isUnleaded = isUnleaded;
     }
 
     public void startEngine(){
@@ -15,8 +18,9 @@ public abstract class Engine {
     public void stopEngine(){
         isOn = false;
     }
+
     public String toString() {
-        return " | Gas fuel: " + isGas + " | Is on: " + isOn;
+        return " | Gas fuel: " + isUnleaded + " | Is on: " + isOn;
     }
 
 

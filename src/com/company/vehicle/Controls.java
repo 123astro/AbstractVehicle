@@ -1,9 +1,14 @@
 package com.company.vehicle;
 
 
+import com.company.engine.Engine;
+import com.company.engine.V6;
+import com.company.engine.V8;
+
 import java.util.Scanner;
 
 public class Controls {
+    private Vehicle vehicle;
     private int speed = 0;
     private int rawSpeed = 0;
     private int incrementDistance = 0;
@@ -11,33 +16,102 @@ public class Controls {
     private int windSpeed = 0;
     private int calculatedWindDistance = 0;
 
+
     public static Scanner scanner = new Scanner(System.in);
 
-    public void getSelections() {
+    private final static String[] CAR_SELECTION = new String[]{
+            "1. 1969 VW BUG",
+            "2. 1968 Corvette split back"
+    };
 
-        System.out.println("\nWould you like to:" +
-                "\nAcelerate ?           1" +
-                "\nDecelerate ?          2" +
-                "\nCoast ?               3" +
-                "\nThe object is to get as close to the finish line as possible. 0 distance represents the finish " +
-                "line. You can not do more than 10 meters past the line because you will die and hit a wall.");
-        valid();
-        int input = scanner.nextInt();
-        scanner.nextLine();
+    private final static String[] ENGINE = new String[]{
+            "1. V6 230 HP",
+            "2. V8 400 HP"
+    };
 
-        switch (input) {
-            case 1 -> this.accelerate();
-            case 2 -> this.decelerate();
-            case 3 -> this.coast();
-            case 4 -> this.stop();
-            default -> getSelections();
+    private final static String[] DRIVE = new String[]{
+            "1. Accelerate",
+            "2. Decelerate",
+            "3. Coast"
+    };
+
+    public static void displayOptions(String prompt, String[] options) { // prompt is the first line to print ( to do)
+        System.out.println(prompt);
+        for (String option : options) {
+            System.out.println(option);
         }
     }
 
-    public void valid() {
-        while (!scanner.hasNextInt()) {
-            System.out.println("Input needs to be one of the numbers above.");
-            scanner.nextLine();
+    public static int getInt(int min, int max, String prompt) {
+        int option = min - 1;
+        do {
+            System.out.println(prompt);
+            String input = scanner.nextLine();
+            try {
+                option = Integer.parseInt(input);
+            } catch (NumberFormatException e) {
+                System.out.println(e);
+                System.out.println("Input numbers only!");
+            }
+        } while (option < min || option > max);
+        return option;
+    }
+
+    public void getSelections() {
+        displayOptions("Your choices", CAR_SELECTION);
+        int choice = getInt(1, 2, "Please selected a car");
+        carLot(choice);
+        displayOptions("Engines: ", ENGINE);
+        choice = getInt(1, 2, "Please select an engine.");
+        selectEngine(choice);
+    }
+
+    public boolean start() {
+        vehicle.startVehicle();
+        System.out.println("Vehicle is running.");
+        displayOptions("Your choices:", DRIVE);
+        int choice = getInt(1, 3, "Select an acton:");
+        return handleMenuSelection(choice);
+    }
+
+    public boolean handleMenuSelection(int choice) {
+        switch (choice) {
+            case 1 -> this.accelerate();
+            case 2 -> this.decelerate();
+            case 3 -> this.coast();
+            case 4 -> {
+                return false;
+            }
+            default -> System.out.println("Invalid");
+        }
+        return true;
+    }
+
+    public void carLot(int choice) {
+        switch (choice) {
+            case 1 -> {
+                vehicle = new Car("You", "black", 2, "bug", "vw", 2);
+                System.out.println(vehicle);
+            }
+            case 2 -> {
+                vehicle = new Car("You", "black", 2, "Chevy", "Corvette", 2);
+                System.out.println(vehicle);
+            }
+            default -> System.out.println(" Please select a vehicle.");
+        }
+    }
+
+    public void selectEngine(int choice) {
+        switch (choice) {
+            case 1 -> {
+                vehicle.addEngine(new V6(true));
+                vehicle.displayEngine();
+            }
+            case 2 -> {
+                vehicle.addEngine(new V8(true));
+                vehicle.displayEngine();
+            }
+            default -> System.out.println(" Please select an engine.");
         }
     }
 
@@ -97,7 +171,7 @@ public class Controls {
             System.out.println("Vehicle has drifted to a stopped!! ");
             distanceLeft -= 1;
             System.out.println("Current distance left to travel " + getDistanceLeft() + " meters");
-            getSelections();
+            //getSelections();
         }
 
     }
@@ -118,7 +192,7 @@ public class Controls {
     }
 
     public void checkPositionOnTrack() {
-        if (distanceLeft <= -11){
+        if (distanceLeft <= -11) {
             System.out.println(" ********************You hit the wall of doom - you loser !!!! " +
                     "***************************");
             stop();

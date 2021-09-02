@@ -1,12 +1,11 @@
 package com.company.engine;
 
 public class V6 extends Engine {
-    private int numberOfCylinders = 6;
-    private int horsepower = 230;
 
-
-    public V6(boolean isGas) {
-        super(isGas);
+    public V6(boolean isUnleaded) {
+        super(isUnleaded);
+        horsepower = 230;
+        numberOfCylinders = 6;
     }
 
     @Override

@@ -18,6 +18,7 @@ public class Car extends Vehicle {
     }
 
 
+
     public String toString() {
         return super.toString() + " | Type of car: " + type + " | Brand of car: " + brand + " | Numbers of doors: " +  +
                 numberOfDoors ;
