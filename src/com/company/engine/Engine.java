@@ -23,6 +23,10 @@ public abstract class Engine {
         return horsepower;
     }
 
+    public boolean isOn() {
+        return isOn;
+    }
+
     public String toString() {
         return "| Gas fuel: " + isUnleaded + " | Is on: " + isOn;
     }
