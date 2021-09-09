@@ -8,7 +8,6 @@ public class V8 extends Engine {
         numberOfCylinders = 8;
     }
 
-
     @Override
     public String toString() {
         return super.toString() + " | Number of Cylinders: " + numberOfCylinders + " | HorsePower: " + horsepower;

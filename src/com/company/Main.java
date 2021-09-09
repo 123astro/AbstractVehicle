@@ -1,6 +1,6 @@
 package com.company;
 
-import com.company.vehicle.Controls;
+import com.company.console.Controls;
 
 public class Main {
 

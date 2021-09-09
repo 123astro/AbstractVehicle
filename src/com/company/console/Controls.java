@@ -1,7 +1,9 @@
-package com.company.vehicle;
+package com.company.console;
 
 import com.company.engine.V6;
 import com.company.engine.V8;
+import com.company.vehicle.Car;
+import com.company.vehicle.Vehicle;
 
 import java.util.Scanner;
 
@@ -13,14 +15,23 @@ public class Controls {
     private int distanceLeft = 100;
     private int windSpeed = 0;
     private int calculatedWindDistance = 0;
-
+    private int numberOfTurns = 0;
+    private CarYears vehicleYears;
 
     public static Scanner scanner = new Scanner(System.in);
 
-    private final static String[] CAR_SELECTION = new String[]{
-            "1. 1969 VW BUG",
-            "2. 1968 Corvette split back"
-    };
+    private void carYears() {
+        int choice = getInt(1,2, "1. New cars? \n2. Vintage cars?");
+        switch (choice) {
+            case 1 -> vehicleYears = new NewCars();
+            case 2 -> vehicleYears = new OldCars();
+        }
+    }
+
+//    private final static String[] CAR_SELECTION = new String[]{
+//            "1. 1969 VW BUG",
+//            "2. 1968 Corvette split back"
+//    };
 
     private final static String[] ENGINE = new String[]{
             "1. V6 230 HP",
@@ -28,10 +39,10 @@ public class Controls {
     };
 
     private final static String[] DRIVE = new String[]{
-            "1. Accelerate",
-            "2. Decelerate",
-            "3. Coast",
-            "4. Turn ignition on",
+            "1. Turn ignition on",
+            "2  Accelerate",
+            "3. Decelerate",
+            "4. Coast",
             "5. Exit Program - Vehicle on fire!!!"
     };
 
@@ -59,8 +70,11 @@ public class Controls {
     }
 
     public void getSelections() {
-        displayOptions("Your choices:", CAR_SELECTION);
-        int choice = getInt(1, 2, "Please selected a car.");
+        System.out.println("Object of game: Get your vehicle past the finish line without hitting the wall with the least number of " +
+                "turns.");
+        carYears();
+        displayOptions("Your choices:", vehicleYears.CAR_SELECTION());
+        int choice = getInt(1, 2, "Please selected a vehicle.");
         choseCarFromLot(choice);
         displayOptions("Engines: ", ENGINE);
         choice = getInt(1, 2, "Please select an engine");
@@ -69,6 +83,7 @@ public class Controls {
     }
 
     public void startVehicle() {
+        vehicle.motorSound();
         vehicle.startVehicle();
     }
 
@@ -85,17 +100,16 @@ public class Controls {
 
     public boolean handleMenuSelection(int choice) {
         switch (choice) {
-            case 1 -> this.accelerate();
-            case 2 -> this.decelerate();
-            case 3 -> this.coast();
-            case 4 -> this.startVehicle();
+            case 1 -> this.startVehicle();
+            case 2 -> this.accelerate();
+            case 3 -> this.decelerate();
+            case 4 -> this.coast();
             case 5 -> {
                 System.out.println("******************BOOM*****************");
                 return false;
             }
             default -> System.out.println("Invalid");
         }
-
         return checkPositionOnTrack();
     }
 
@@ -106,11 +120,11 @@ public class Controls {
     public void choseCarFromLot(int choice) {
         switch (choice) {
             case 1 -> {
-                vehicle = new Car("You", "Black", 2, "BUG", "VOLKSWAGEN", 2);
+                vehicle = vehicleYears.CARS().get(0);
                 System.out.println("THE OPERATOR AND CAR: " + vehicle);
             }
             case 2 -> {
-                vehicle = new Car("You", "Black", 2, "Chevy", "Corvette", 2);
+                vehicle = vehicleYears.CARS().get(1);
                 System.out.println("THE OPERATOR AND CAR: " + vehicle);
             }
             default -> System.out.println(" Please select a vehicle.");
@@ -135,8 +149,12 @@ public class Controls {
             rawSpeed += 1;
             windResistance();
             distanceLeft -= calculatedWindDistance;
+            if(distanceLeft <= -1 ){
+                return;
+            }
             System.out.println("Current distance left to travel " + getDistanceLeft() + " meters");
             System.out.println("Current speed " + getSpeed() + " mph.");
+            System.out.println("Number of turns: " + numberOfTurns + "\n");
 
         } else {
             System.out.println("************Please start vehicle*******************");
@@ -153,24 +171,38 @@ public class Controls {
     }
 
     public void coast() {
-        windResistance();
-        System.out.println("Current speed " + getSpeed());
-        if (getSpeed() == 0) {
-            System.out.println("Vehicle has drifted to a stopped!! ");
-            distanceLeft -= 1;
-            System.out.println("Current distance left to travel " + getDistanceLeft() + " meters");
+        speed -= 4;
+        numberOfTurns++;
+        if(speed <= 0 ){
+            System.out.println("The car is no longer coasting. This will cost you a turn.");
+            System.out.println("Number of turns: " + numberOfTurns + "\n");
             return;
         }
-        distanceLeft -= calculatedWindDistance;
-        System.out.println("Current distance left to travel: " + getDistanceLeft() + " meters");
-        speed -= 2;
-    }
+        windResistance();
+        if(distanceLeft <= -1 ){
+            return;
+        }
+        System.out.println("Current speed " + getSpeed() + " mph");
+        if (getSpeed() == 0) {
+            System.out.println("Vehicle has drifted to a stopped!! ");
+            System.out.println("Current distance left to travel " + getDistanceLeft() + " meters");
+            System.out.println("Number of turns: " + numberOfTurns + "\n");
+            return;
 
+        }
+        distanceLeft -= calculatedWindDistance;
+        if(distanceLeft <= -1 ){
+            return;
+        }
+        System.out.println("Current distance left to travel: " + getDistanceLeft() + " meters");
+        System.out.println("Number of turns: " + numberOfTurns + "\n");
+    }
     public void setSpeed(int speed) {
         this.speed = speed;
     }
 
     public void decelerate() {
+        numberOfTurns++;
         if (isVehicleOn()) {
             speed -= 10;
             if (getSpeed() < 0) {
@@ -182,14 +214,18 @@ public class Controls {
             rawSpeed -= 1;
             windResistance();
             distanceLeft -= calculatedWindDistance;
+            if(distanceLeft <= -1 ){
+                return;
+            }
             System.out.println("Current distance left to travel: " + getDistanceLeft() + " meters");
             System.out.println("Current speed " + getSpeed());
             if (getSpeed() == 0)
-                System.out.println("Current speed " + getSpeed());
+                System.out.println("Current speed " + getSpeed() + " mph");
             if (getSpeed() == 0) {
                 System.out.println("Vehicle has drifted to a stopped!! ");
                 distanceLeft -= 1;
                 System.out.println("Current distance left to travel " + getDistanceLeft() + " meters");
+                System.out.println("Number of turns: " + numberOfTurns + "\n");
             }
         } else {
             System.out.println("The engine is not even on!!! Please start and then accelerate in order to decelerate" +
@@ -197,11 +233,9 @@ public class Controls {
         }
     }
 
-    public void stop() {
-        System.exit(1);
-    }
 
     public int windResistance() {
+        numberOfTurns++;
         int min = 1;
         int max = 10;
         int incrementedPower = 10;
@@ -211,6 +245,9 @@ public class Controls {
         int wind = (int) Math.round(Math.random() * (max - min + 1) + min);
         windSpeed = wind * 10;
         calculatedWindDistance = (incrementedPower - wind) + (1 + rawSpeed);
+        if(distanceLeft <= -1 ){
+            return wind;
+        }
         System.out.println("The vehicle has gone " + calculatedWindDistance + " meters.");
         System.out.println("Head wind was: " + windSpeed + " mph.");
         return wind;
@@ -224,6 +261,8 @@ public class Controls {
         }
         if (distanceLeft < 0 && distanceLeft > -10) {
             System.out.println("*******************You win!!****************************");
+            System.out.println("You win with the number of turns equal to:  " + numberOfTurns + "\n");
+
             return false;
         } return true;
     }
